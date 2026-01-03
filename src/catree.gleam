@@ -8,9 +8,9 @@ import simplifile
 //
 // input_paths -> target_file_paths -> print
 //
-// process
-//   file -> print
-//   directory -> process
+// TODO
+// - test
+// - ignore
 pub fn main() -> Nil {
   let args = argv.load().arguments
   let assert Ok(cwd) = simplifile.current_directory()
@@ -20,7 +20,11 @@ pub fn main() -> Nil {
   io.println("🔶 absolute_paths:")
   echo absolute_paths
 
-  let target_file_paths = processor.get_target_file_paths(absolute_paths)
+  let target_file_paths =
+    processor.get_target_file_paths(
+      absolute_paths,
+      processor.Deps(simplifile.read_directory, simplifile.is_file),
+    )
 
   io.println("🔶 target_file_paths:")
   echo target_file_paths
