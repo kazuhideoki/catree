@@ -3,7 +3,7 @@ import catree/target_finder
 pub fn get_target_file_paths_test() {
   assert target_finder.get_target_file_paths(
       ["/Users/hoge"],
-      target_finder.Deps(
+      target_finder.GetTargetFilePathsDeps(
         fn(path) {
           case path {
             "/Users/hoge" -> Ok(["foo.txt"])
@@ -25,7 +25,7 @@ pub fn get_target_file_paths_test() {
 pub fn get_target_file_paths_multiple_paths_test() {
   assert target_finder.get_target_file_paths(
       ["/Users/hoge", "/Users/hoge/baz.txt"],
-      target_finder.Deps(
+      target_finder.GetTargetFilePathsDeps(
         fn(path) {
           case path {
             "/Users/hoge" -> Ok(["foo.txt", "bar.txt"])

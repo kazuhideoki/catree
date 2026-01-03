@@ -3,7 +3,7 @@ import gleam/list
 import simplifile
 
 pub type GetTargetFilePathsDeps {
-  Deps(
+  GetTargetFilePathsDeps(
     read_directory: fn(String) -> Result(List(String), simplifile.FileError),
     is_file: fn(String) -> Result(Bool, simplifile.FileError),
   )
