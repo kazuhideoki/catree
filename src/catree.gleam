@@ -1,5 +1,9 @@
+import argv
 import gleam/io
 
 pub fn main() -> Nil {
-  io.println("Hello from catree!")
+  let args = argv.load().arguments
+  echo args
+
+  Nil
 }
