@@ -7,7 +7,7 @@ import gleam/regexp
 pub fn convert_to_absolute_paths(
   values: List(String),
   cwd: String,
-) -> Result(List(String), _) {
+) -> List(String) {
   let absolute_paths =
     list.filter_map(values, fn(path) {
       let is_absolute = filepath.is_absolute(path)
@@ -31,7 +31,7 @@ pub fn convert_to_absolute_paths(
       }
     })
 
-  Ok(absolute_paths)
+  absolute_paths
 }
 
 fn check_invalid_relative_path(path: String) -> Bool {
