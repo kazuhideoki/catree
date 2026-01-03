@@ -1,9 +1,9 @@
-import catree/processor
+import catree/target_finder
 
 pub fn get_target_file_paths_test() {
-  assert processor.get_target_file_paths(
+  assert target_finder.get_target_file_paths(
       ["/Users/hoge"],
-      processor.Deps(
+      target_finder.Deps(
         fn(path) {
           case path {
             "/Users/hoge" -> Ok(["foo.txt"])
@@ -23,9 +23,9 @@ pub fn get_target_file_paths_test() {
 }
 
 pub fn get_target_file_paths_multiple_paths_test() {
-  assert processor.get_target_file_paths(
+  assert target_finder.get_target_file_paths(
       ["/Users/hoge", "/Users/hoge/baz.txt"],
-      processor.Deps(
+      target_finder.Deps(
         fn(path) {
           case path {
             "/Users/hoge" -> Ok(["foo.txt", "bar.txt"])
