@@ -2,7 +2,6 @@ import filepath
 import gleam/io
 import gleam/list
 import gleam/regexp
-import simplifile
 
 /// Loads the arguments and returns them as absolute paths.
 pub fn convert_to_absolute_paths(
@@ -20,9 +19,9 @@ pub fn convert_to_absolute_paths(
           case is_invalid_relative_path {
             True -> {
               io.println_error(
-                "Invalid path, cannot start with relative path like './', "
+                "Invalid path, cannot start with relative path like './', '"
                 <> path
-                <> " is ignored",
+                <> "' is ignored",
               )
               Error("")
             }
@@ -33,15 +32,6 @@ pub fn convert_to_absolute_paths(
     })
 
   Ok(absolute_paths)
-}
-
-/// Panic if the current directory cannot be retrieved.
-pub fn get_current_directory() -> String {
-  let cwd = simplifile.current_directory()
-  case cwd {
-    Ok(path) -> path
-    _ -> panic as "Failed to get current directory"
-  }
 }
 
 fn check_invalid_relative_path(path: String) -> Bool {
