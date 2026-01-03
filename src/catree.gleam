@@ -1,9 +1,13 @@
 import argv
-import gleam/io
+import catree/paths
 
 pub fn main() -> Nil {
   let args = argv.load().arguments
-  echo args
+  let cwd = paths.get_current_directory()
+
+  let paths = paths.convert_to_absolute_paths(args, cwd)
+
+  echo paths
 
   Nil
 }
