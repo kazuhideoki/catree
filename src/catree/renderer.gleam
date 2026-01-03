@@ -4,7 +4,10 @@ import gleam/result
 import simplifile
 
 pub type PrintFileDeps {
-  PrintFileDeps
+  PrintFileDeps(
+    read_file: fn(String) -> Result(String, PrintFileError),
+    read_extension: fn(String) -> Result(String, PrintFileError),
+  )
 }
 
 pub type PrintFileError {
@@ -12,9 +15,27 @@ pub type PrintFileError {
   ReadExtensionError(String)
 }
 
-pub fn print_file(absolute_path: String) -> Result(Nil, PrintFileError) {
-  use content <- result.try(read_file(absolute_path))
-  use ext <- result.try(read_extension(absolute_path))
+pub fn read_file(absolute_path: String) -> Result(String, PrintFileError) {
+  case simplifile.read(absolute_path) {
+    Ok(content) -> Ok(content)
+    Error(_) -> Error(ReadError("Cannot read file: " <> absolute_path))
+  }
+}
+
+pub fn read_extension(absolute_path: String) -> Result(String, PrintFileError) {
+  case filepath.extension(absolute_path) {
+    Ok(content) -> Ok(content)
+    Error(_) ->
+      Error(ReadExtensionError("Cannot read extension: " <> absolute_path))
+  }
+}
+
+pub fn print_file(
+  absolute_path: String,
+  deps: PrintFileDeps,
+) -> Result(Nil, PrintFileError) {
+  use content <- result.try(deps.read_file(absolute_path))
+  use ext <- result.try(deps.read_extension(absolute_path))
   let lang = get_lang_type(ext)
 
   io.println(absolute_path)
@@ -24,21 +45,6 @@ pub fn print_file(absolute_path: String) -> Result(Nil, PrintFileError) {
   io.println("")
 
   Ok(Nil)
-}
-
-fn read_file(absolute_path: String) -> Result(String, PrintFileError) {
-  case simplifile.read(absolute_path) {
-    Ok(content) -> Ok(content)
-    Error(_) -> Error(ReadError("Cannot read file: " <> absolute_path))
-  }
-}
-
-fn read_extension(absolute_path: String) -> Result(String, PrintFileError) {
-  case filepath.extension(absolute_path) {
-    Ok(content) -> Ok(content)
-    Error(_) ->
-      Error(ReadExtensionError("Cannot read extension: " <> absolute_path))
-  }
 }
 
 fn get_lang_type(ext: String) -> String {

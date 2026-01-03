@@ -33,7 +33,12 @@ pub fn main() -> Nil {
   // io.println("🔶 target_file_paths:")
   // echo target_file_paths
 
-  list.each(target_file_paths, renderer.print_file)
+  list.each(target_file_paths, fn(path) {
+    renderer.print_file(
+      path,
+      renderer.PrintFileDeps(renderer.read_file, renderer.read_extension),
+    )
+  })
 
   Nil
 }
