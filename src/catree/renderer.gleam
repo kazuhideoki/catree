@@ -54,8 +54,6 @@ fn get_lang_type(ext: String) -> String {
     "js" -> "javascript"
     "py" -> "python"
     "md" -> "markdown"
-    "json" -> "json"
-    "jsonc" -> "jsonc"
     "yml" -> "yaml"
     "rb" -> "ruby"
     "rs" -> "rust"

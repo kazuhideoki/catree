@@ -9,29 +9,18 @@ import simplifile
 //
 // ✅ input_paths -> target_file_paths -> print
 //
-// TODO
-// - ignore
-// - renderer test
+// ## ignore
+// - toml で読み込む
 pub fn main() -> Nil {
-  let args = argv.load().arguments
   let assert Ok(cwd) = simplifile.current_directory()
 
-  let absolute_paths = paths.convert_to_absolute_paths(args, cwd)
-
-  // io.println("🔶 absolute_paths:")
-  // echo absolute_paths
-
   let target_file_paths =
-    target_finder.get_target_file_paths(
-      absolute_paths,
-      target_finder.GetTargetFilePathsDeps(
-        simplifile.read_directory,
-        simplifile.is_file,
-      ),
-    )
-
-  // io.println("🔶 target_file_paths:")
-  // echo target_file_paths
+    argv.load().arguments
+    |> paths.convert_to_absolute_paths(cwd)
+    |> target_finder.get_target_file_paths(target_finder.GetTargetFilePathsDeps(
+      target_finder.read_directory,
+      target_finder.is_file,
+    ))
 
   list.each(target_file_paths, fn(path) {
     renderer.print_file(

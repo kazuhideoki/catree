@@ -4,9 +4,36 @@ import simplifile
 
 pub type GetTargetFilePathsDeps {
   GetTargetFilePathsDeps(
-    read_directory: fn(String) -> Result(List(String), simplifile.FileError),
-    is_file: fn(String) -> Result(Bool, simplifile.FileError),
+    read_directory: fn(String) -> Result(List(String), GetTargetFilePathsError),
+    is_file: fn(String) -> Result(Bool, GetTargetFilePathsError),
+    // is_gitignore: fn(String) -> Result(Bool, simplifile.FileError),
   )
+}
+
+pub type GetTargetFilePathsError {
+  ReadDirectoryError(String)
+  IsFileError(String)
+  // IsGitignoreError(simplifile.FileError),
+}
+
+pub fn read_directory(
+  directory_path: String,
+) -> Result(List(String), GetTargetFilePathsError) {
+  case simplifile.read_directory(directory_path) {
+    Ok(paths) -> Ok(paths)
+    Error(_) ->
+      Error(ReadDirectoryError("Failed to read directory: " <> directory_path))
+  }
+}
+
+pub fn is_file(path: String) -> Result(Bool, GetTargetFilePathsError) {
+  case simplifile.is_file(path) {
+    Ok(is_file) -> Ok(is_file)
+    Error(_) ->
+      Error(IsFileError(
+        "Failed to check if the file: " <> path <> " is a file or not",
+      ))
+  }
 }
 
 /// Get all target file paths from given paths.
